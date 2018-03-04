@@ -1,0 +1,162 @@
+/*For example:						Saturday Mar 3, 648 Pm- 719 to write initial version. to 8 PM to perfect. 
+My solution to Simple reversed parenthesis Challenge on Codewars. 
+I read the TOS and posting here does not seem to be a violation but if it please contact me and I will remove / make private. 
+
+If Not possible to form balanced parenthesis. Return -1.
+
+*/
+
+/*
+If count of ( & ) /2 has remainder, return -1, impossible to balance
+	//If index of ) is > total # of indexes holding (), then +1
+Create an array each to hold index of each (, and )
+add both arrays and sort to find midpoint
+for any leftyArray indexes > midpoint, counter ++
+for any rightyArray indexes < midpoint, counter ++
+return counter
+*/
+
+function reversedParenthesisCounter(aString) {
+
+var totalCount = 0;
+var counter = 0;
+var midPoint = null;
+var midPointIndex = null;
+var leftyArray = [];
+var rightyArray = [];
+var totalArray = [];
+
+
+	for (var i = 0; i <= aString.length; i++){
+	
+		if( aString[i] === "(" ){				// had just if( i === "(") & nothing accessed
+			leftyArray.push(i);
+			totalArray.push(i);
+		}
+		if( aString[i] === ")" ){
+			rightyArray.push(i);
+			totalArray.push(i);
+		}
+	}	
+
+	totalCount = ( (leftyArray.length) + (rightyArray.length)); 
+	debug("total count reads: " + totalCount);
+	debug("total array is  "  + totalArray);
+
+
+	if ( (totalCount % 2 ) !== 0 ) {
+		return -1;
+	}												// need to add else continue? 
+
+	midPoint = ( (totalArray.length) / 2);			// if 8 items, 8/2 = 4, btwn 4 & 5 is midpoint. 
+	midPointIndex = midPoint + .5 ;  //  ( (totalArray(midPoint) + totalArray((midPoint + 1)) ) /2 )
+	debug("mid Point is  "  + midPoint);
+	debug("mid Point index is  "  + midPointIndex);
+
+
+															// k is midpoint index of totalArray
+	for (var k = midPoint; k < totalArray.length; k++){	// loop through 2nd half () array (4567)
+		if (aString.charAt(totalArray[k]) === "(" ){							// looking for opening ('s 
+			debug("var k is :" + k);
+			debug("total array of k is :" + totalArray[k] );
+			debug("total array of k in aString is :" + aString.charAt(totalArray[k]) );
+			counter += 1;
+		} else {
+			continue;
+		}
+	}
+	
+	for (var j = 0; j < midPoint; j++){			// look in total Index 0 - 3 for closing )
+		if (aString.charAt(totalArray[j]) === ")" ){
+			counter += 1;
+		}
+	}
+	debug("Counter reads : " + counter);
+
+
+/*
+	for (var k = midPoint; k <= totalArray.length; k++){	// loop through 2nd half () array (4567)
+		if (aString.charAt(totalArray[k]) === "(" ){							// looking for opening ('s 
+			debug("var k is :" + k);
+			debug("total array of k is :" + totalArray[k] );
+			debug("total array of k in aString is :" + aString.charAt(totalArray[k]) );
+			counter += 1;
+		} else {
+			continue;
+		}
+	}
+This outputs only ( left parenthesis : 
+-> total count reads: 20
+--> total array is  0,8,9,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,37
+--> mid Point is  10
+--> mid Point index is  10.5
+--> var k is :10
+--> total array of k is :23
+--> total array of k in aString is :(
+--> var k is :12
+--> total array of k is :25
+--> total array of k in aString is :(
+--> var k is :13
+--> total array of k is :26
+--> total array of k in aString is :(
+--> var k is :14
+--> total array of k is :27
+--> total array of k in aString is :(
+--> var k is :17
+--> total array of k is :30
+--> total array of k in aString is :(
+--> var k is :18
+--> total array of k is :31
+--> total array of k in aString is :(
+--> var k is :20
+--> total array of k is :undefined
+--> total array of k in aString is :(
+--> Counter reads : 12
+--> Test C answer : 12
+*/
+
+/*. Looking in wrong thing, totalArray[k] is index of aString where () is!!! 
+	for (var k = midPoint; k <= totalArray.length; k++){	// loop through 2nd half () array (4567)
+		if (totalArray[k] === "(" ){							// looking for opening ('s 
+			debug("var k is :" + k);
+			debug("total array of k is :" + totalArray[k] );
+			counter += 1;
+		} else {
+			continue;
+		}
+	}
+	
+	for (var j = 0; j <= midPoint; j++){			// look in total Index 0 - 3 for closing )
+		if (totalArray[j] === ")" ){
+			counter += 1;
+		}
+	}
+	debug("Counter reads : " + counter);
+*/ 
+
+//	for (var i = 0; i < leftyArray.length; i++){
+//		if (leftyArray[i] === ")" ){
+//			counter ++;
+//		}
+//	}
+//	for (var i = 0; i < rightyArray.length; i++){
+//		if (rightyArray[i] === "(" ){				//before just if( i === "(" ) .. no accessing
+//			counter ++;
+//		}
+//	}
+
+
+return counter;
+
+
+}
+
+
+testStringA = "solve((((()))"  // should = -1 because uneven # of () will never balance
+testStringB = "(noodles(pastas((carbs)"
+testStringC = "(noodles()pastas))(()()..()((())((carbs)"    // 20 ps total. 5 + 6 =11 to reverse 
+
+debug("Test A answer : " + (reversedParenthesisCounter(testStringA)) ); 
+debug("Test B answer : " + (reversedParenthesisCounter(testStringB)) ); 
+debug("Test C answer : " + (reversedParenthesisCounter(testStringC)) ); 
+
