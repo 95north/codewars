@@ -4,6 +4,7 @@ I read the TOS and posting here does not seem to be a violation but if it please
 
 If Not possible to form balanced parenthesis. Return -1.
 
+My version doesn't pass all of the Codewars tests, but it passes all of mine. Not sure why it fails, there are a lot of random tests on codewars. 
 */
 
 /*
